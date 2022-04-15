@@ -20,7 +20,11 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
   connect:
-    image: confluentinc/cp-kafka-connect:5.0.0
+    build:
+     context: .
+     dockerfile: connect-dockerfile
+    image: custom-connect
+#    image: confluentinc/cp-kafka-connect:5.0.0
     hostname: connect
     depends_on:
       - zookeeper
@@ -47,5 +51,5 @@ services:
       CONNECT_PRODUCER_COMPRESSION_TYPE: "snappy"
       CONNECT_PLUGIN_PATH: /jars, /usr/share/confluent-hub-components
     volumes:
-      - ./jars:/jars
+     # - ./jars:/jars
       - ./config:/config
