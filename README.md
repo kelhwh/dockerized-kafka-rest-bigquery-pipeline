@@ -1,0 +1,1 @@
+# dockerized-kafka-rest-bigquery-pipeline
