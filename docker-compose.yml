@@ -2,14 +2,14 @@ version: "2"
 services:
   zookeeper:
     hostname: zookeeper
-    image: confluentinc/cp-zookeeper:5.0.0
+    image: confluentinc/cp-zookeeper:7.0.2
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       zk_id: "1"
 
   kafka:
     hostname: kafka
-    image: confluentinc/cp-kafka:5.0.0
+    image: confluentinc/cp-kafka:7.0.2
     links:
       - zookeeper
     ports:
@@ -24,7 +24,6 @@ services:
      context: .
      dockerfile: connect-dockerfile
     image: custom-connect
-#    image: confluentinc/cp-kafka-connect:5.0.0
     hostname: connect
     depends_on:
       - zookeeper
@@ -47,6 +46,7 @@ services:
       CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
       CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
       CONNECT_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       CONNECT_PRODUCER_COMPRESSION_TYPE: "snappy"
       CONNECT_PLUGIN_PATH: /jars, /usr/share/confluent-hub-components
