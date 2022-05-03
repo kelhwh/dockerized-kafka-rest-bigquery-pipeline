@@ -1,0 +1,19 @@
+FROM confluentinc/cp-kafka-connect:7.0.2
+
+USER root
+
+RUN yum update \
+ && yum install -y maven \
+    git \
+ && yum clean all
+
+ENV JAVA_HOME=/usr/lib/jvm/zulu18
+
+RUN mkdir /jars \
+ && cd /jars \
+ && git clone https://github.com/llofberg/kafka-connect-rest.git \
+ && cd kafka-connect-rest \
+ && git checkout 6288541c896770014b80b9890ffc5b00831c18f2 \
+ && mvn clean install -DskipTests
+
+RUN confluent-hub install --no-prompt wepay/kafka-connect-bigquery:2.2.2
