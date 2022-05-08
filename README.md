@@ -13,3 +13,17 @@ https://www.confluent.io/hub/wepay/kafka-connect-bigquery
 ```
 docker compose up
 ```
+
+4. Start the source connector (Create the kafka topic first if you don't want to apply the default topic settings)
+```
+docker container exec -it frank1571_connect_1 bash -c \
+"curl -i -X POST -H "Accept:application/json"  -H  "Content-Type:application/json" \
+http://localhost:8083/connectors/ -d @config/source-coingecko.json"
+```
+
+5. Start the sink connector
+```
+docker container exec -it frank1571_connect_1 bash -c \
+"curl -i -X POST -H "Accept:application/json"  -H  "Content-Type:application/json" \
+http://localhost:8083/connectors/ -d @config/sink-bigquery.json"
+```
